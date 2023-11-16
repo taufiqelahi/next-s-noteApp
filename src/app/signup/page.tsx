@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
+import { supabaseBrowserClient } from "../../../utils/supabase_bowser";
 interface Errors {
     name?: string;
     email?: string;
@@ -45,10 +46,21 @@ const SignupPage = () => {
         setIsFormValid(Object.keys(errors).length === 0);
     };
     // Submit 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         if (isFormValid) {
             console.log('Form submitted successfully!');
-            router.push('/login')
+            
+            const { data, error } = await supabaseBrowserClient.auth.signUp({
+                email: email,
+                password: password,
+    
+            })
+            if(!error){
+                router.push('/login')
+
+            }
+
+           
         } else {
             console.log('Form has errors. Please correct them.');
         }
