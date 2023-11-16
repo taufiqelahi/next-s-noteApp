@@ -41,21 +41,21 @@ const LoginPage = () => {
         setIsFormValid(Object.keys(errors).length === 0);
     };
     // Submit 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         if (isFormValid) {
             console.log('Form submitted successfully!');
             const { data, error } = await supabaseBrowserClient.auth.signInWithPassword({
                 email: email,
                 password: password,
-                
-    
-            }) 
-            if(!error){
-                router.push('/notes') 
+
+
+            })
+            if (!error) {
+                router.push('/')
             }
-           
-            
-           
+
+
+
         } else {
             console.log('Form has errors. Please correct them.');
         }

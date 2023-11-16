@@ -1,6 +1,7 @@
 
 
 
+import { Database } from '@/app/types/supabase';
 import { createBrowserClient } from '@supabase/ssr'
 
 
@@ -9,7 +10,7 @@ const key= process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
 
 
-export const supabaseBrowserClient=createBrowserClient(url,key);
+export const supabaseBrowserClient=createBrowserClient<Database>(url,key);
 
 
 
