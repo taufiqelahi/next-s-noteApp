@@ -1,15 +1,23 @@
 
 'use client'
 
-import { NextApiRequest, NextApiResponse } from 'next'
+
 import { Database } from '../types/supabase'
+
 
 
 import { useEffect, useState } from 'react'
 import { supabaseBrowserClient } from '../../../utils/supabase_bowser'
 import { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
+import {PencilSquareIcon} from '@heroicons/react/24/solid'
+
+
+
+
+
 
 const NotePage = () => {
+  
 
   const [notes, setNotes] = useState<Array<Database>>([]);
   const [titleText, settitleText] = useState('');
@@ -85,9 +93,15 @@ const NotePage = () => {
         <h2 className='my-4'>Notes:</h2>
         <ul >
           {notes.map((note, index) => (
-            <li className='max-w-sm border border-blue-100 shadow-lg my-4  ' key={index}>
-              <h1 className=' text-lg font-bold mx-2'>{note.title}</h1>
-              <p className='  mx-4'> {note.description}</p>
+            <li className=' flex justify-between max-w-sm border border-blue-100 shadow-lg my-4  ' key={index}>
+              <div>
+              <h1 className=' text-lg font-bold'>{note.title}</h1>
+              <p className='  '> {note.description}</p>
+              </div>
+            
+              <PencilSquareIcon  className="h-6 w-6 text-blue-500" />
+              
+
             </li>
           ))}
         </ul>

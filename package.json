@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
     "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.38.4",
+    "heroicons": "^2.0.18",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18"
