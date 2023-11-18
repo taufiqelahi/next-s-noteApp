@@ -12,9 +12,16 @@ import { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 const NotePage = () => {
 
   const [notes, setNotes] = useState<Array<Database>>([]);
-  const [inputText, setInputText] = useState('');
+  const [titleText, settitleText] = useState('');
+  const [descriptionText, setdescriptionText] = useState('');
+  const [isPopupOpen, setPopupOpen] = useState(false);
   let notesData:any = []
-
+  const openPopup = () => {
+    setPopupOpen(true);
+  };
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
   useEffect(() => {
 
     if (typeof window !== 'undefined') {
@@ -40,7 +47,8 @@ const NotePage = () => {
   async function addNote() {
     const { error } = await supabaseBrowserClient
       .from('notes')
-      .insert({ title: 'Denmark', description: inputText })
+      .insert({ title: titleText, description: descriptionText })
+      closePopup();
 
   }
   function handleInserts(payload: RealtimePostgresChangesPayload<{ [key: string]: any }>): void {
@@ -72,26 +80,66 @@ const NotePage = () => {
 
   return (
     <div className='grid grid-cols-2 gap-4 h-screen'>
-      <div className='sm:col-span-2 md:col-span-1 '>
+      <div className='sm:col-span-2 md:col-span-1 mx-4 '>
 
-        <h2>Notes:</h2>
-        <ul>
+        <h2 className='my-4'>Notes:</h2>
+        <ul >
           {notes.map((note, index) => (
-            <li key={index}>
-              <h1 className=' text-lg font-bold'>{note.title}</h1>
-              <p> {note.description}</p>
+            <li className='max-w-sm border border-blue-100 shadow-lg my-4  ' key={index}>
+              <h1 className=' text-lg font-bold mx-2'>{note.title}</h1>
+              <p className='  mx-4'> {note.description}</p>
             </li>
           ))}
         </ul>
       </div>
       <div className='sm:col-span-2 md:col-span-1 '> Create new notes
         <div className='my-4 mx-4' >
-          <textarea value={inputText} onChange={(e) => setInputText(e.target.value)} className='h-96 w-full border border-black' />
+          
         </div>
         <div>
-          <button onClick={addNote} className='h-10 w-20 rounded-xl bg-green-700 my-4'>
+          <button onClick={openPopup} className='h-10 w-20 rounded-xl bg-green-700 my-4'>
             Create
           </button>
+          {isPopupOpen && (
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <h2 className="text-2xl font-bold mb-4">create notes</h2>
+
+            <div className="mb-4">
+              <label htmlFor="input1" className="block text-gray-700 text-sm font-bold mb-2">
+                Title:
+              </label>
+              <input
+                type="text"
+               
+                value={titleText}
+                onChange={(e) => settitleText(e.target.value)}
+                className="border rounded w-full p-2"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="input2" className="block text-gray-700 text-sm font-bold mb-2">
+                Description:
+              </label>
+              <textarea
+               
+                value={descriptionText}
+                onChange={(e) => setdescriptionText(e.target.value)}
+                className="border rounded w-full p-2"
+              />
+            </div>
+
+            <button onClick={addNote} className="bg-blue-500 text-white p-2">
+              Submit
+            </button>
+
+            <button onClick={closePopup} className="bg-red-500 text-white p-2 mt-4">
+              Close
+            </button>
+          </div>
+        </div>
+      )}
         </div>
 
 
