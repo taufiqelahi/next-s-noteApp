@@ -7,29 +7,37 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { supabaseBrowserClient } from '../../../utils/supabase_bowser'
 import { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 import { PencilSquareIcon } from '@heroicons/react/24/solid'
-import Popup from '../components/popup'
+import UpdateNotePopup from '../components/update_note_popup'
+import DeleteNotePopup from '../components/delete_note_popup'
 
 
 const NotePage = () => {
 
 
   const [notes, setNotes] = useState<Array<Database>>([]);
-  
+
   const [note, setNote] = useState<Database>();
 
 
 
-  const [isPopupOpen, setPopupOpen] = useState(false);
-
+  const [updateNotePopupOpen, setUpdateNotePopupOpen] = useState(false);
+  const [deleteNotePopupOpen, setDeleteNotePopupOpen] = useState(false);
   let notesData: any = []
 
-  const openPopup = (n:any) => {
-   setNote(n)
+  const openUpdateNotePopup = (n: any) => {
+    setNote(n)
 
-    setPopupOpen(true);
+    setUpdateNotePopupOpen(true);
+  };
+
+  const openDeleteNotePopup = (n: any) => {
+    setNote(n)
+
+    setDeleteNotePopupOpen(true);
   };
   const closePopup = () => {
-    setPopupOpen(false);
+    setDeleteNotePopupOpen(false);
+    setUpdateNotePopupOpen(false);
   };
   useEffect(() => {
 
@@ -82,44 +90,50 @@ const NotePage = () => {
   }
 
   return (
-    <div className='grid grid-cols-2 gap-4 h-screen'>
-      <div className='sm:col-span-2 md:col-span-1 mx-4 '>
+    <div className='m-10 gap-4 h-screen'>
+     
 
-        <h2 className='my-4'>Notes:</h2>
+      <div className='flex justify-between'>
+
+      <h2 className='my-4'>Notes:</h2>
+        <button onClick={() => openUpdateNotePopup({})} className=' w-28 rounded-xl bg-green-700 text-white '>
+            Create
+          </button>
+      </div>
         <ul >
           {notes.map((note, index) => (
-            <li  key={index}>
-           
-            <div className=' flex justify-between max-w-sm border border-blue-100 shadow-lg my-4  '>
-            <div>
-            <h1 className=' text-lg font-bold'>{note.title}</h1>
-            <p className='  '> {note.description}</p>
-          </div>
-          <PencilSquareIcon onClick={()=>openPopup(note)}  className="h-6 w-6 text-blue-500" />
-          </div>
+            <li key={index}>
+
+              <div className=' flex justify-between my-10 border border-blue-100 shadow-lg  '>
+                <div>
+                  <h1 className=' text-lg font-bold'>{note.title}</h1>
+                  <p className='  '> {note.description}</p>
+                </div>
+                <PencilSquareIcon onClick={() => openUpdateNotePopup(note)} className="h-6 w-6 text-blue-500" />
+             
+                <PencilSquareIcon onClick={() => openDeleteNotePopup(note)} className="h-6 w-6 text-blue-500" />
         
+              </div>
+
             </li>
           ))}
         </ul>
-      </div>
-      <div className='sm:col-span-2 md:col-span-1 '> Create new notes
-        <div className='my-4 mx-4' >
-
-        </div>
-        <div>
-          <button onClick={()=>openPopup({})} className='h-10 w-20 rounded-xl bg-green-700 my-4'>
-            Create
-          </button>
-          {isPopupOpen && (
-    <Popup note={note} onClose={closePopup} />
+   
+    
+         
+          {updateNotePopupOpen && (
+            <UpdateNotePopup note={note} onClose={closePopup} />
+          )}
+           {deleteNotePopupOpen && (
+            <DeleteNotePopup note={note} onClose={closePopup} />
           )}
         </div>
 
 
 
 
-      </div>
-    </div>
+
+   
   )
 
 

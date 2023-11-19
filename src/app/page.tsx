@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { supabaseBrowserClient } from "../../utils/supabase_bowser";
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
+import NotePage from "./notes/page";
 
 type User = {
   email: string
@@ -88,6 +89,8 @@ const Home = () => {
           <button onClick={logout}>Logout</button>
 
         </div>
+
+     
       </div>
     )
 
